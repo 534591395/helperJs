@@ -10,7 +10,7 @@
         return Helper;
     };
     //获取cookie信息
-    Helper.getCookie = function() {
+    Helper.getCookie = function(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
         arr = document.cookie.match(reg);
         if (arr) {
@@ -18,6 +18,37 @@
         } else {
             return null;
         }
+    };
+    //设置cookie
+    /**
+     * 设置cookie
+     * @param {String} name 要设置的cookie名称
+     * @param {String} value 设置的cookie值
+     * @param {Object} config 对应cookie配置的其他属性
+     * @param {Object} config.expires cookie到期时间，毫秒 ，3天过期 = 3 
+     * @param {Object} config.path cookie生效路径, 设置当前域名下有效 path = '/'
+     * @param {Object} config.domain //域名设置
+     * @param {Object} config.secure //安全设置 true http 下不上传到web服务器
+     */
+    Helper.setCookie = function(name, value, config) {
+        var configs = config ? config : {};
+        var expires = configs.expires || "";
+        var path = configs.path || "";
+        var domain = configs.domain || "";
+        var secure = configs.secure || "";
+
+        if(typeof expires === 'number') {
+            var days = expires;
+            var t = expires = new Date();
+            t.setTime(+t + days * 864e+5);
+        }
+        return (document.cookie = [
+            encodeURIComponent(name), '=', encodeURIComponent(value),
+            expires ? '; expires=' + expires.toUTCString() : '',
+            path ? '; path=' + path : '',
+            domain ? '; domain=' + domain : '',
+            secure ? '; secure' : ''
+        ].join(''));
     };
     /**
      * POST 请求
