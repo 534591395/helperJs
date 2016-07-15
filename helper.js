@@ -11,7 +11,7 @@
     };
     //获取cookie信息
     Helper.getCookie = function(name) {
-        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        var arr, reg = new RegExp("(^| )" + encodeURIComponent(name) + "=([^;]*)(;|$)");
         arr = document.cookie.match(reg);
         if (arr) {
             return decodeURIComponent(arr[2]);
@@ -25,7 +25,7 @@
      * @param {String} name 要设置的cookie名称
      * @param {String} value 设置的cookie值
      * @param {Object} config 对应cookie配置的其他属性
-     * @param {Object} config.expires cookie到期时间，毫秒 ，3天过期 = 3 
+     * @param {Object} config.expires cookie到期时间，天，3天过期 = 3 
      * @param {Object} config.path cookie生效路径, 设置当前域名下有效 path = '/'
      * @param {Object} config.domain //域名设置
      * @param {Object} config.secure //安全设置 true http 下不上传到web服务器
